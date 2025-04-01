@@ -1,5 +1,4 @@
 import { useState, ButtonHTMLAttributes } from "react";
-import clsx from "clsx";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     onSubmit?: () => void;
@@ -17,15 +16,15 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button: React.FC<ButtonProps> = ({
     onSubmit = () => { },
-    width = "full",
+    width = "100%",
     height = "40px",
-    paddingX = "20px",
+    paddingX = "15px",
     paddingY = "10px",
     textColor = "#1F2128",
     backgroundColor = "#FFCE22",
     hoverBackgroundColor = "#FFD84D",
     borderRadius = "4px",
-    textSize = "text-sm",
+    textSize = "14px", // textSize in pixels instead of text class
     className = "",
 }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -39,18 +38,24 @@ const Button: React.FC<ButtonProps> = ({
     const handleMouseDown = () => setIsPressed(true);
     const handleMouseUp = () => setIsPressed(false);
 
+    const buttonStyle = {
+        width: width,
+        height: height,
+        paddingLeft: paddingX,
+        paddingRight: paddingX,
+        paddingTop: paddingY,
+        paddingBottom: paddingY,
+        color: textColor,
+        backgroundColor: isHovered && !isPressed ? hoverBackgroundColor : backgroundColor,
+        borderRadius: borderRadius,
+        fontSize: textSize,
+        transition: "all 0.2s ease-in-out",
+    };
+
     return (
         <button
-            className={clsx(
-                `w-${width} h-[${height}] px-[${paddingX}] py-[${paddingY}] ${textSize} text-[${textColor}]`,
-                `bg-[${backgroundColor}]`,
-                `rounded-[${borderRadius}]`,
-                "transition-all duration-200",
-                {
-                    [`bg-[${hoverBackgroundColor}]`]: isHovered && !isPressed,
-                },
-                className
-            )}
+            className={className}
+            style={buttonStyle}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onMouseDown={handleMouseDown}

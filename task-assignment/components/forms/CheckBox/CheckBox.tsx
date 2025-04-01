@@ -1,5 +1,4 @@
 import { useState, InputHTMLAttributes } from "react";
-import clsx from "clsx";
 import CheckmarkIcon from "./CheckMarkIcon";
 
 interface CheckBoxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'checked' | 'onChange'> {
@@ -24,20 +23,20 @@ interface CheckBoxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'siz
 }
 
 const defaultColors = {
-    border: 'gray-300',
-    hoverBorder: '#BDBDBD',
-    checkedBg: '#2469F6',
-    checkedHoverBg: '#5087F8',
-    checkmark: 'white',
-    hoverCheckmark: '#E3E3E3',
-    pressedCheckmark: '#878787',
+    border: "#D1D5DB", // gray-300
+    hoverBorder: "#BDBDBD",
+    checkedBg: "#2469F6",
+    checkedHoverBg: "#5087F8",
+    checkmark: "white",
+    hoverCheckmark: "#E3E3E3",
+    pressedCheckmark: "#878787",
 } as const;
 
 const CheckBox: React.FC<CheckBoxProps> = ({
     checked,
     onChange,
-    size = { width: '23px', height: '23px' },
-    appearance = { borderRadius: '6px', colors: defaultColors },
+    size = { width: "23px", height: "23px" },
+    appearance = { borderRadius: "6px", colors: defaultColors },
     className = "",
     disabled = false,
     ...props
@@ -55,34 +54,12 @@ const CheckBox: React.FC<CheckBoxProps> = ({
         onMouseUp: () => setIsPressed(false),
     };
 
-    const checkboxClasses = clsx(
-        "flex items-center cursor-pointer select-none",
-        { "cursor-not-allowed opacity-50": disabled },
-        className
-    );
-
-    const boxClasses = clsx(
-        "flex items-center justify-center border transition-all duration-200 ease-in-out shadow-sm",
-        `w-[${size.width}] h-[${size.height}] rounded-[${appearance.borderRadius}]`,
-        {
-            [`border-${appearance.colors?.border}`]: !checked && !isHovered && !isPressed,
-            [`border-[${appearance.colors?.hoverBorder}]`]: !checked && (isHovered || isPressed),
-            [`bg-[${appearance.colors?.checkedBg}]`]: checked && (!isHovered || isPressed),
-            [`bg-[${appearance.colors?.checkedHoverBg}]`]: checked && isHovered && !isPressed,
-        }
-    );
-
-    const iconClasses = clsx(
-        "transition-all duration-200",
-        {
-            [`text-${appearance.colors?.checkmark}`]: checked,
-            [`text-[${appearance.colors?.hoverCheckmark}]`]: isHovered && !checked,
-            [`text-[${appearance.colors?.pressedCheckmark}]`]: isPressed && !checked,
-        }
-    );
-
     return (
-        <label className={checkboxClasses} {...handleInteraction}>
+        <label
+            className={`flex items-center cursor-pointer select-none ${disabled ? "cursor-not-allowed opacity-50" : ""
+                } ${className}`}
+            {...handleInteraction}
+        >
             <div className="relative">
                 <input
                     type="checkbox"
@@ -92,9 +69,36 @@ const CheckBox: React.FC<CheckBoxProps> = ({
                     onChange={(e) => onChange(e.target.checked)}
                     {...props}
                 />
-                <div className={boxClasses}>
+                <div
+                    className="flex items-center justify-center border shadow-sm"
+                    style={{
+                        width: size.width,
+                        height: size.height,
+                        borderRadius: appearance.borderRadius,
+                        borderColor: !checked
+                            ? isHovered || isPressed
+                                ? appearance.colors?.hoverBorder
+                                : appearance.colors?.border
+                            : "transparent",
+                        backgroundColor: checked
+                            ? isHovered && !isPressed
+                                ? appearance.colors?.checkedHoverBg
+                                : appearance.colors?.checkedBg
+                            : "transparent",
+                    }}
+                >
                     {(checked || isHovered || isPressed) && (
-                        <CheckmarkIcon className={iconClasses} />
+                        <CheckmarkIcon
+                            style={{
+                                color: checked
+                                    ? appearance.colors?.checkmark
+                                    : isHovered
+                                        ? appearance.colors?.hoverCheckmark
+                                        : isPressed
+                                            ? appearance.colors?.pressedCheckmark
+                                            : "transparent",
+                            }}
+                        />
                     )}
                 </div>
             </div>

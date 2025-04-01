@@ -30,7 +30,7 @@ const CheckboxCard: React.FC<CheckboxCardProps> = ({
     };
 
     const handleCheck = (index: number, isChecked: boolean) => {
-        setCheckedItems(prev => {
+        setCheckedItems((prev) => {
             const updated = [...prev];
             updated[index] = isChecked;
             return updated;
@@ -57,12 +57,12 @@ const CheckboxCard: React.FC<CheckboxCardProps> = ({
             </CheckBoxWrapper>
 
             {/* Body Section */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex flex-col flex-grow overflow-hidden">
                 <BorderDivider />
 
                 {/* Scrollable Section */}
-                <div className="relative flex-1 overflow-hidden">
-                    <div className="overflow-y-auto -mr-[17px] max-h-[164px]">
+                <div className="relative flex-grow overflow-hidden">
+                    <div className="overflow-y-auto -mr-17 max-h-[164px]">
                         {checkedItems.map((checked, index) => (
                             <CheckBoxWrapper
                                 key={index}
@@ -82,8 +82,8 @@ const CheckboxCard: React.FC<CheckboxCardProps> = ({
             </div>
 
             {/* Footer */}
-            <FlexWrapper className="w-full justify-center items-center px-[15px] py-[10px]">
-                <Button onSubmit={handleSubmit} />
+            <FlexWrapper className="w-full justify-center items-center px-4 py-2">
+                <Button onClick={handleSubmit}>Submit</Button>
             </FlexWrapper>
         </Card>
     );

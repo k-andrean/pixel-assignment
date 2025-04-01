@@ -1,5 +1,4 @@
-import { ReactNode } from 'react';
-import clsx from 'clsx';
+import { ReactNode } from "react";
 
 interface CardProps {
     children: ReactNode;
@@ -20,19 +19,19 @@ const Card: React.FC<CardProps> = ({
     height = "auto",
     padding = { x: "0", y: "10px" },
     borderRadius = "6px",
-    shadow = "0_4px_15px_#1414141F",
+    shadow = "0px 8px 15px rgba(20, 20, 20, 0.12)",
     className = "",
 }) => {
     return (
         <div
-            className={clsx(
-                "flex flex-col",
-                `w-[${width}] h-[${height}]`,
-                `px-[${padding.x}] py-[${padding.y}]`,
-                `rounded-[${borderRadius}]`,
-                `shadow-[${shadow}]`,
-                className
-            )}
+            className={`flex flex-col ${className}`}
+            style={{
+                width,
+                height,
+                padding: `${padding.y} ${padding.x}`,
+                borderRadius,
+                boxShadow: shadow,
+            }}
         >
             {children}
         </div>

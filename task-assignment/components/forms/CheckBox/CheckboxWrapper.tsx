@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import clsx from "clsx";
 import FlexWrapper from "../../common/Wrapper/FlexWrapper";
 
 interface CheckboxWrapperProps {
@@ -23,17 +22,17 @@ interface CheckboxWrapperProps {
     };
     contentProps?: {
         className?: string;
-        align?: 'start' | 'center' | 'end';
+        align?: "start" | "center" | "end";
     };
 }
 
 const defaultLayout = {
     padding: {
-        x: { left: '22px', right: '15px' },
-        y: '8px',
+        x: { left: "22px", right: "15px" },
+        y: "8px",
     },
-    maxWidth: '370px',
-    minHeight: '41px',
+    maxWidth: "370px",
+    minHeight: "41px",
 } as const;
 
 const CheckboxWrapper: React.FC<CheckboxWrapperProps> = ({
@@ -43,35 +42,40 @@ const CheckboxWrapper: React.FC<CheckboxWrapperProps> = ({
     className = "",
     placeholderProps = {
         className: "",
-        size: "text-sm"
+        size: "text-sm",
     },
     contentProps = {
         className: "",
-        align: "center"
-    }
+        align: "center",
+    },
 }) => {
-    const containerClasses = clsx(
-        "items-center justify-between",
-        `py-[${layout.padding?.y}] pl-[${layout.padding?.x?.left}] pr-[${layout.padding?.x?.right}]`,
-        `max-w-[${layout.maxWidth}] min-h-[${layout.minHeight}]`,
-        className
-    );
+    const wrapperStyle = {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingTop: layout.padding?.y,
+        paddingBottom: layout.padding?.y,
+        paddingLeft: layout.padding?.x?.left,
+        paddingRight: layout.padding?.x?.right,
+        maxWidth: layout.maxWidth,
+        minHeight: layout.minHeight,
+    };
 
-    const placeholderClasses = clsx(
-        placeholderProps.size,
-        placeholderProps.className
-    );
+    const placeholderStyle = {
+        fontSize: placeholderProps.size === "text-sm" ? "0.875rem" : "1rem", // Assuming default is "text-sm"
+        ...placeholderProps.className && { className: placeholderProps.className },
+    };
 
-    const contentClasses = clsx(
-        "flex",
-        `items-${contentProps.align}`,
-        contentProps.className
-    );
+    const contentStyle = {
+        display: "flex",
+        alignItems: contentProps.align || "center",
+        ...contentProps.className && { className: contentProps.className },
+    };
 
     return (
-        <FlexWrapper className={containerClasses}>
-            <span className={placeholderClasses}>{placeholder}</span>
-            <div className={contentClasses}>{children}</div>
+        <FlexWrapper style={wrapperStyle} className={className}>
+            <span style={placeholderStyle}>{placeholder}</span>
+            <div style={contentStyle}>{children}</div>
         </FlexWrapper>
     );
 };
